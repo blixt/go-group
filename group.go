@@ -39,10 +39,10 @@ func (g *Group) Parse(arguments []string) *Group {
 	}
 	subarg := g.Flag.Arg(0)
 	if sub, ok := g.subs[subarg]; ok {
-		// Remove the first instance of the subargument.
+		// Ignore everything before the first instance of the subargument.
 		for i, a := range arguments {
 			if i > 0 && a == subarg {
-				arguments = append(arguments[:i], arguments[i+1:]...)
+				arguments = arguments[i:]
 				break
 			}
 		}
