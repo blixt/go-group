@@ -15,6 +15,8 @@ import "fmt"
 import "github.com/blixt/go-group"
 
 func main() {
+  verbose := group.Flag.Bool("v", false, "Output more")
+
   help := group.Sub("help")
 
   clone := group.Sub("clone")
@@ -38,6 +40,10 @@ func main() {
     fmt.Printf("Cloning %s (branch %s)...\n", repo, *branch)
   default:
     fmt.Println("Unrecognized group. Choose one of:", group.Subs())
+  }
+
+  if *verbose {
+    fmt.Println("And here's a bunch of extra output because you specified -v.")
   }
 }
 ```
