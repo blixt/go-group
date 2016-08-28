@@ -30,7 +30,7 @@ func (g *Group) ActiveSub() *Group {
 	return g.sub
 }
 
-func (g *Group) Parse(arguments []string) *flag.FlagSet {
+func (g *Group) Parse(arguments []string) *Group {
 	if arguments[0] != g.name {
 		panic("group: unexpected argument")
 	}
@@ -48,9 +48,10 @@ func (g *Group) Parse(arguments []string) *flag.FlagSet {
 		}
 		g.sub = sub
 		arguments[0] = subarg
-		return sub.Parse(arguments)
+		sub.Parse(arguments)
+		return sub
 	}
-	return g.Flag
+	return g
 }
 
 func (g *Group) Sub(name string) *Group {
@@ -74,7 +75,7 @@ func ActiveSub() *Group {
 	return CommandLine.ActiveSub()
 }
 
-func Parse() *flag.FlagSet {
+func Parse() *Group {
 	return CommandLine.Parse(os.Args)
 }
 

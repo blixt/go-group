@@ -21,9 +21,7 @@ func main() {
   branch := clone.Flag.String("branch", "master", "The branch to clone")
   clone.Flag.StringVar(branch, "b", "master", "The branch to clone (shorthand)")
 
-  group.Parse()
-
-  switch group.ActiveSub() {
+  switch group.Parse() {
   case help:
     category := help.Flag.Arg(0)
     if category != "" {
