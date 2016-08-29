@@ -67,9 +67,6 @@ type Group struct {
 // in the argument list given to Parse, or nil if none was specified. This
 // method will always return nil until Parse has been called.
 func (g *Group) ActiveSub() *Group {
-	if !g.Flag.Parsed() {
-		panic("group: ActiveSub called before Parse")
-	}
 	return g.sub
 }
 
