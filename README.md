@@ -5,8 +5,14 @@ The group package makes it easier to handle multiple command line groups
 with the `flags` package.
 
 
-Example
--------
+Documentation
+-------------
+
+Documentation can be found at: https://godoc.org/github.com/blixt/go-group
+
+
+Example #1
+----------
 
 ```go
 package main
@@ -45,6 +51,33 @@ func main() {
 
   if *verbose {
     fmt.Println("And here's a bunch of extra output because you specified -v.")
+  }
+}
+```
+
+
+Example #2
+----------
+
+It's also possible to create deeply nested sub-commands.
+
+```go
+package main
+
+import "fmt"
+import "github.com/blixt/go-group"
+
+var preview = group.Sub("preview")
+// When the "app" group is stable, change `preview` to `group` below.
+var app = preview.Sub("app")
+var deploy = app.Sub("deploy")
+
+func main() {
+  switch group.Parse() {
+  case deploy:
+    fmt.Println("Deploying...")
+  default:
+    fmt.Println("Unsupported command.")
   }
 }
 ```
