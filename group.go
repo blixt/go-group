@@ -31,18 +31,15 @@ func (g *Group) ActiveSub() *Group {
 }
 
 func (g *Group) Parse(arguments []string) *Group {
-	if arguments[0] != g.name {
-		panic("group: unexpected argument")
-	}
-	if err := g.Flag.Parse(arguments[1:]); err != nil {
+	if err := g.Flag.Parse(arguments); err != nil {
 		panic(err)
 	}
 	subarg := g.Flag.Arg(0)
 	if sub, ok := g.subs[subarg]; ok {
 		// Ignore everything before the first instance of the subargument.
 		for i, a := range arguments {
-			if i > 0 && a == subarg {
-				arguments = arguments[i:]
+			if a == subarg {
+				arguments = arguments[i+1:]
 				break
 			}
 		}
@@ -74,7 +71,7 @@ func ActiveSub() *Group {
 }
 
 func Parse() *Group {
-	return CommandLine.Parse(os.Args)
+	return CommandLine.Parse(os.Args[1:])
 }
 
 func Sub(name string) *Group {
