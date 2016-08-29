@@ -30,9 +30,9 @@ func main() {
   case help:
     category := help.Flag.Arg(0)
     if category != "" {
-      fmt.Println("TODO: Write some help about", category)
+      fmt.Println("This is some help about", category)
     } else {
-      fmt.Println("TODO: Write some general help for this tool")
+      fmt.Println("This is some general help for this tool")
     }
   case clone:
     repo := clone.Flag.Arg(0)
@@ -49,6 +49,20 @@ func main() {
     fmt.Println("And here's a bunch of extra output because you specified -v.")
   }
 }
+```
+
+### Result
+
+```bash
+# Using global flag -v and command group clone
+$ ./example -v clone git.example.com:myrepo.git
+Cloning git.example.com:myrepo.git (branch master)...
+# Using command group flag -branch
+$ ./example clone git.example.com:myrepo.git -branch dev
+Cloning git.example.com:myrepo.git (branch dev)...
+# Using a different command group
+$ ./example help
+This is some general help for this tool
 ```
 
 
@@ -76,4 +90,13 @@ func main() {
     fmt.Println("Unsupported command.")
   }
 }
+```
+
+### Result
+
+```bash
+$ ./example preview app deploy
+Deploying...
+$ ./example somethingelse
+Unsupported command.
 ```
