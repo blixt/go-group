@@ -71,21 +71,21 @@ var deploy = app.Sub("deploy")
 var verbose = group.Flag.Bool("v", false, "Output more")
 
 func main() {
-  switch group.Parse() {
-  case deploy:
-    fmt.Println("Deploying...")
-  default:
-    fmt.Println("Unsupported command.")
-  }
+	switch group.Parse() {
+	case deploy:
+		fmt.Println("Deploying...")
+	default:
+		fmt.Println("Unsupported command.")
+	}
 
-  if *verbose {
-    fmt.Println("And here's a bunch of extra output because you specified -v.")
-  }
+	if *verbose {
+		fmt.Println("And here's a bunch of extra output because you specified -v.")
+	}
 }
 ```
 
 (When the `app` command group is no longer in preview, you would just
-need to change `preview` to `group`.)
+need to change `preview.Sub("app")` to `group.Sub("app")`.)
 
 ### Result
 
