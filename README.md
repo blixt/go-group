@@ -14,15 +14,16 @@ package main
 import "fmt"
 import "github.com/blixt/go-group"
 
+// group.Flag lets you create global flags (same as flag package).
+var verbose = group.Flag.Bool("v", false, "Output more")
+// Keep references to sub-commands to parse arguments and flags later.
+var help = group.Sub("help")
+var clone = group.Sub("clone")
+// Each sub-command has its own FlagSet for specific flags.
+var branch = clone.Flag.String("branch", "master", "The branch to clone")
+
 func main() {
-  verbose := group.Flag.Bool("v", false, "Output more")
-
-  help := group.Sub("help")
-
-  clone := group.Sub("clone")
-  branch := clone.Flag.String("branch", "master", "The branch to clone")
-  clone.Flag.StringVar(branch, "b", "master", "The branch to clone (shorthand)")
-
+  // Parse the sub-command used (and any flags along the way).
   switch group.Parse() {
   case help:
     category := help.Flag.Arg(0)
