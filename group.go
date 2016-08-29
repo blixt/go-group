@@ -47,9 +47,7 @@ func (g *Group) Parse(arguments []string) *Group {
 			}
 		}
 		g.sub = sub
-		arguments[0] = subarg
-		sub.Parse(arguments)
-		return sub
+		return sub.Parse(arguments)
 	}
 	return g
 }
