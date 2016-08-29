@@ -1,35 +1,35 @@
 /*
-	Package group implements parsing for command-line groups.
+Package group implements parsing for command-line groups.
 
-	This package is a light-weight wrapper for the built-in flag package, adding
-	support for branching based on specific arguments.
+This package is a light-weight wrapper for the built-in flag package, adding
+support for branching based on specific arguments.
 
-	This declares command group clone.
-		import "github.com/blixt/go-group"
-		var clone = group.Sub("clone")
-	If you like, you can bind flags that will only be parsed
-	if a group is specified in the arguments list.
-		var branch = clone.Flag.String("branch", "master", "branch to clone")
-	Multiple levels of grouping is also supported.
-		var codereview = group.Sub("codereview")
-		var submit = codereview.Sub("submit")
+This declares command group clone.
+	import "github.com/blixt/go-group"
+	var clone = group.Sub("clone")
+If you like, you can bind flags that will only be parsed
+if the group is specified in the arguments list.
+	var branch = clone.Flag.String("branch", "master", "branch to clone")
+Multiple levels of grouping is also supported.
+	var codereview = group.Sub("codereview")
+	var submit = codereview.Sub("submit")
 
-	After all groups and flags are defined, call
-		group.Parse()
-	to parse the command line into the defined groups and flags.
+After all groups and flags are defined, call
+	group.Parse()
+to parse the command line into the defined groups and flags.
 
-	Groups may then be used directly to access parsed flags and arguments. For
-	convenience, the Parse function returns the deepest matched group, which works
-	well with the switch statement:
-		switch group.Parse() {
-		case clone:
-			repo := clone.Flag.Arg(0)
-			fmt.Println("Cloning", repo, "on branch", *branch)
-		case submit:
-			fmt.Println("Submitting code review...")
-		default:
-			fmt.Println("unsupported command")
-		}
+Groups may then be used directly to access parsed flags and arguments. For
+convenience, the Parse function returns the deepest matched group, which works
+well with the switch statement:
+	switch group.Parse() {
+	case clone:
+		repo := clone.Flag.Arg(0)
+		fmt.Println("Cloning", repo, "on branch", *branch)
+	case submit:
+		fmt.Println("Submitting code review...")
+	default:
+		fmt.Println("unsupported command")
+	}
 */
 package group
 
