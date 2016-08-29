@@ -11,10 +11,14 @@ func TestDeeplyNested(t *testing.T) {
 	app := preview.Sub("app")
 	deploy := app.Sub("deploy")
 
-	args := []string{"gcloud", "preview", "app", "deploy"}
+	args := []string{"gcloud", "preview", "app", "deploy", "app.yaml"}
+
 	g := root.Parse(args[1:])
 	if g != deploy {
 		t.Errorf("unexpected group %v", g)
+	}
+	if deploy.Flag.Arg(0) != "app.yaml" {
+		t.Errorf("unexpected argument %v", g.Flag.Arg(0))
 	}
 }
 
@@ -37,5 +41,8 @@ func TestGlobal(t *testing.T) {
 	}
 	if *branch != "dev" {
 		t.Errorf("unexpected branch value %v", *branch)
+	}
+	if clone.Flag.Arg(0) != "git.example.com:repo.git" {
+		t.Errorf("unexpected argument %v", clone.Flag.Arg(0))
 	}
 }
