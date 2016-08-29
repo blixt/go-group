@@ -16,8 +16,6 @@ package main
 import "fmt"
 import "github.com/blixt/go-group"
 
-// group.Flag lets you create global flags (same as flag package).
-var verbose = group.Flag.Bool("v", false, "Output more")
 // Keep references to sub-commands to parse arguments and flags later.
 var help = group.Sub("help")
 var clone = group.Sub("clone")
@@ -28,48 +26,35 @@ func main() {
   // Parse the sub-command used (and any flags along the way).
   switch group.Parse() {
   case help:
-    category := help.Flag.Arg(0)
-    if category != "" {
-      fmt.Println("This is some help about", category)
-    } else {
-      fmt.Println("This is some general help for this tool")
-    }
+    fmt.Println("This is some help for this tool.")
   case clone:
     repo := clone.Flag.Arg(0)
     if repo == "" {
       fmt.Println("Invalid repository!")
-      return
+      break
     }
     fmt.Printf("Cloning %s (branch %s)...\n", repo, *branch)
   default:
     fmt.Println("Unrecognized group. Choose one of:", group.Subs())
-  }
-
-  if *verbose {
-    fmt.Println("And here's a bunch of extra output because you specified -v.")
   }
 }
 ```
 
 ### Result
 
-```bash
-# Using global flag -v and command group clone
-$ ./example -v clone git.example.com:myrepo.git
-Cloning git.example.com:myrepo.git (branch master)...
-# Using command group flag -branch
+```
 $ ./example clone git.example.com:myrepo.git -branch dev
 Cloning git.example.com:myrepo.git (branch dev)...
-# Using a different command group
+
 $ ./example help
-This is some general help for this tool
+This is some help for this tool.
 ```
 
 
 Example #2
 ----------
 
-It's also possible to create deeply nested sub-commands.
+This example shows how to make a deeply nested command and global flags.
 
 ```go
 package main
@@ -78,9 +63,10 @@ import "fmt"
 import "github.com/blixt/go-group"
 
 var preview = group.Sub("preview")
-// When the "app" group is stable, change `preview` to `group` below.
 var app = preview.Sub("app")
 var deploy = app.Sub("deploy")
+// Global flag (before any of the command groups):
+var verbose = group.Flag.Bool("v", false, "Output more")
 
 func main() {
   switch group.Parse() {
@@ -89,14 +75,23 @@ func main() {
   default:
     fmt.Println("Unsupported command.")
   }
+
+  if *verbose {
+    fmt.Println("And here's a bunch of extra output because you specified -v.")
+  }
 }
 ```
 
+(When the `app` command group is no longer in preview, you would just
+need to change `preview` to `group`.)
+
 ### Result
 
-```bash
-$ ./example preview app deploy
+```
+$ ./example -v preview app deploy
 Deploying...
+And here's a bunch of extra output because you specified -v.
+
 $ ./example somethingelse
 Unsupported command.
 ```
