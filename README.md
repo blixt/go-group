@@ -1,14 +1,10 @@
 group package
 =============
 
+[![GoDoc](https://godoc.org/github.com/blixt/go-group?status.svg)](https://godoc.org/github.com/blixt/go-group)
+
 The group package makes it easier to handle multiple command line groups
 with the `flags` package.
-
-
-Documentation
--------------
-
-Documentation can be found at: https://godoc.org/github.com/blixt/go-group
 
 
 Example #1
